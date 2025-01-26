@@ -122,6 +122,10 @@ const loginUser = asyncHandler( async (req, res) => {
     }
 
     const isPasswordValid = await user.isPasswordCorrect(password)
+
+    if(!isPasswordValid){
+        throw new ApiError(401, "Invalid user credentials")
+    }
     
     const {accessToken, refreshToken} = await generateAccessAndRefereshTokens(user._id)
 
@@ -340,7 +344,7 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
 
     return res
     .status(200)
-    .json(new apiResponse(200, user, "cover image updated successfully"))
+    .json(new ApiResponse(200, user, "cover image updated successfully"))
 })
 
 const getUserChannelProfile = asyncHandler( async(req, res) => {
@@ -409,7 +413,7 @@ const getUserChannelProfile = asyncHandler( async(req, res) => {
     return res
     .status(200)
     .json(
-        new apiResponse(200, channel[0], "User channel fetched successfully")
+        new ApiResponse(200, channel[0], "User channel fetched successfully")
     )
 })
 
