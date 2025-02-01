@@ -133,7 +133,7 @@ const deleteTweet = asyncHandler(async (req, res) => {
         throw new ApiError(401, "Unauthorized request")
     }
 
-    const deleteTweet = await tweet.delete()
+    const deleteTweet = await tweet.deleteOne()
 
     if(!deleteTweet){
         throw new ApiError(500, "Error while deleting tweet")

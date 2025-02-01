@@ -55,10 +55,10 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
 
     if (!isLiked) {
         try {
-            const liked = await Like.create(
+            const liked = await Like.create({
                 comment: commentId,
                 likedBy: req.user._id
-            )
+            })
 
             return res
                 .status(200)
@@ -95,10 +95,10 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
 
     if (!isLiked) {
         try {
-            const liked = await Like.create(
+            const liked = await Like.create({
                 tweet: tweetId,
                 likedBy: req.user._id
-            )
+            })
 
             return res
                 .status(200)
@@ -128,7 +128,7 @@ const getLikedVideos = asyncHandler(async (req, res) => {
 
     const likedVidoes = Like.aggregate([
         {
-            $match: {likedBy: new mongoose.Types.ObjectId(req.user._id)}
+            $match: { likedBy: new mongoose.Types.ObjectId(req.user._id) }
         },
         {
             $lookup: {
@@ -154,26 +154,26 @@ const getLikedVideos = asyncHandler(async (req, res) => {
         },
         {
             $project: {
-                title:"$video.title",
-                thumbnail:"$video.thumbnail",
-                videoFile:"$video.videoFile",
-                description:"$video.description",
-                duration:"$video.duration",
-                views:"$video.views",
-                owner:{
-                    fullName:"$owner.fullName",
-                    userName:"$owner.userName",
-                    avatar:"$owner.avatar"
+                title: "$video.title",
+                thumbnail: "$video.thumbnail",
+                videoFile: "$video.videoFile",
+                description: "$video.description",
+                duration: "$video.duration",
+                views: "$video.views",
+                owner: {
+                    fullName: "$owner.fullName",
+                    userName: "$owner.userName",
+                    avatar: "$owner.avatar"
                 }
             }
         }
     ])
 
     return res
-    .status(200)
-    .json(
-        new ApiResponse(200, likedVidoes, "liked videos fetched successfully")
-    )
+        .status(200)
+        .json(
+            new ApiResponse(200, likedVidoes, "liked videos fetched successfully")
+        )
 })
 
 export {
