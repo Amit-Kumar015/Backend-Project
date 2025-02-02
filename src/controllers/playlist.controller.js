@@ -8,7 +8,7 @@ import {asyncHandler} from "../utils/asyncHandler.js"
 const createPlaylist = asyncHandler(async (req, res) => {
     const {name, description} = req.body
 
-    if(!name || !description){
+    if([name, description].some(item => item.trim() === "")){
         throw new ApiError(404, "name and description are required")
     }
 

@@ -224,7 +224,7 @@ const updateVideo = asyncHandler(async (req, res) => {
     const {newTitle, newDescription} = req.body
     const thumbnailLocalPath = req.files?.thumbnail[0]?.path
 
-    if(!(newTitle || newDescription)){
+    if([newTitle, newDescription].some(item => item.trim() === "")){
         throw new ApiError(404, "provide new content to change")
     }
 
